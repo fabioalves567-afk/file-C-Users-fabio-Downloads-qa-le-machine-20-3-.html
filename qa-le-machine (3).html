@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#001e50">
+<title>Quadro Auxiliar LE</title>
+<style>
+:root{
+  --b:#001e50;--b2:#0040c1;--b3:#0066cc;--ac:#00c8ff;
+  --gr:#00c853;--ye:#ffd600;--re:#d50000;--or:#ff6d00;
+  --dk:#07090f;--md:#0f1520;--cd:#151f30;--bd:#1e2d4a;
+  --tx:#e8eeff;--mu:#5a6a90;--fn:'Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:var(--fn);background:var(--dk);color:var(--tx);overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--bd);}
+
+/* HEADER */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--b);border-bottom:1px solid var(--b2);box-shadow:0 2px 24px rgba(0,30,80,.8);}
+#hdr-top{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 6px;}
+#hdr-bot{display:flex;align-items:center;gap:6px;padding:0 12px 8px;overflow-x:auto;}
+#hdr-bot::-webkit-scrollbar{height:0;}
+.hbadge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--b2),var(--ac));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;box-shadow:0 0 10px rgba(0,200,255,.35);flex-shrink:0;}
+.hinfo{margin-left:9px;flex:1;min-width:0;}
+.htitle{font-size:14px;font-weight:900;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hsub{font-size:9px;color:var(--ac);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+#clk{font-size:11px;color:var(--mu);text-align:right;line-height:1.3;flex-shrink:0;margin-left:8px;}
+.hbtn{background:rgba(255,255,255,.07);border:1px solid var(--bd);border-radius:7px;padding:6px 11px;color:var(--tx);font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0;}
+.hbtn-maq{background:linear-gradient(135deg,#003a8c,var(--b2));border:1px solid var(--ac);border-radius:7px;padding:6px 12px;color:#fff;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 0 8px rgba(0,200,255,.25);flex-shrink:0;}
+.hbtn-print{background:linear-gradient(135deg,#1a3a6a,#2255aa);border:1px solid var(--bd);border-radius:7px;padding:6px 11px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.hbtn-wpp{background:linear-gradient(135deg,#075e54,#128c7e);border:none;border-radius:7px;padding:6px 11px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;flex-shrink:0;}
+
+/* STATUS PILL */
+#pill{margin:88px 14px 0;background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;position:relative;overflow:hidden;}
+#pill::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;}
+#pill.op::before{background:radial-gradient(ellipse at 0 50%,rgba(0,200,83,.1),transparent 60%);opacity:1;}
+#pill.par::before{background:radial-gradient(ellipse at 0 50%,rgba(213,0,0,.12),transparent 60%);opacity:1;}
+#pill.man::before{background:radial-gradient(ellipse at 0 50%,rgba(255,214,0,.1),transparent 60%);opacity:1;}
+.pcol{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 0;}
+.pcol+.pcol{border-left:1px solid var(--bd);}
+.p-lbl{font-size:8px;color:var(--mu);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.p-val{font-size:22px;font-weight:900;line-height:1;}
+.p-sub{font-size:9px;color:var(--mu);margin-top:2px;}
+.sdot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle;}
+.sdot.gr{background:var(--gr);box-shadow:0 0 6px var(--gr);}
+.sdot.re{background:var(--re);animation:blk 1s infinite;}
+.sdot.ye{background:var(--ye);box-shadow:0 0 6px var(--ye);}
+@keyframes blk{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* KPI */
+#kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px 14px 0;}
+.kp{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:10px 6px;text-align:center;position:relative;overflow:hidden;}
+.kp::after{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;border-radius:0 0 4px 4px;}
+.kp.re::after{background:var(--re)}.kp.or::after{background:var(--or)}.kp.ye::after{background:var(--ye)}.kp.bl::after{background:var(--ac)}
+.kv{font-size:20px;font-weight:900;line-height:1;margin-bottom:3px;}
+.kp.re .kv{color:var(--re)}.kp.or .kv{color:var(--or)}.kp.ye .kv{color:var(--ye)}.kp.bl .kv{color:var(--ac)}
+.kl{font-size:8px;color:var(--mu);font-weight:700;letter-spacing:.3px;text-transform:uppercase;line-height:1.2;}
+
+/* ALERTA */
+#abox{margin:10px 14px 0;background:rgba(213,0,0,.12);border:1px solid var(--re);border-radius:10px;padding:10px 12px;display:none;animation:pls 2s infinite;}
+#abox.show{display:flex;gap:10px;align-items:flex-start;}
+@keyframes pls{0%,100%{box-shadow:0 0 0 0 rgba(213,0,0,.3)}50%{box-shadow:0 0 0 5px rgba(213,0,0,.05)}}
+.ai{font-size:18px;flex-shrink:0;padding-top:1px;}
+.at{font-size:11px;font-weight:800;color:var(--re);}
+.am{font-size:10px;color:var(--mu);margin-top:2px;line-height:1.4;}
+
+/* ACTIONS */
+#acts{padding:12px 14px 0;display:flex;flex-direction:column;gap:10px;}
+.bb{border:none;border-radius:14px;padding:16px 18px;font-size:15px;font-weight:900;cursor:pointer;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;transition:all .15s;position:relative;overflow:hidden;text-transform:uppercase;}
+.bb::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,.07);transform:rotate(15deg);animation:shim 4s infinite;}
+@keyframes shim{0%{left:-60%}100%{left:130%}}
+.bb:active{transform:scale(.97);}
+.bb-r{background:linear-gradient(135deg,#a50000,var(--re));color:#fff;box-shadow:0 4px 20px rgba(213,0,0,.35);}
+.bb-o{background:linear-gradient(135deg,#c04000,var(--or));color:#fff;box-shadow:0 4px 20px rgba(255,109,0,.25);}
+.bb-y{background:linear-gradient(135deg,#7a6000,#b08800);color:#fff;box-shadow:0 4px 20px rgba(176,136,0,.2);}
+.brow{display:flex;gap:8px;}
+.bs{flex:1;border:none;border-radius:10px;padding:11px 8px;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;background:var(--cd);border:1px solid var(--bd);color:var(--tx);}
+.bs:active{transform:scale(.97);}
+
+/* HISTÓRICO */
+#hist{padding:14px 14px 80px;}
+.stitle{font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.stitle::after{content:'';flex:1;height:1px;background:var(--bd);}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;}
+.chips::-webkit-scrollbar{height:0;}
+.chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--bd);background:var(--cd);color:var(--mu);transition:all .2s;}
+.chip.active{background:var(--b2);border-color:var(--ac);color:#fff;}
+.tl{position:relative;padding-left:18px;}
+.tl::before{content:'';position:absolute;left:5px;top:0;bottom:0;width:2px;background:var(--bd);}
+.tli{position:relative;margin-bottom:14px;}
+.tldot{position:absolute;left:-16px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid;}
+.tltime{font-size:9px;color:var(--mu);margin-bottom:3px;}
+.tlc{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:10px;}
+.tltitle{font-size:12px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.tldesc{font-size:11px;color:var(--mu);line-height:1.4;}
+.tlmeta{display:flex;flex-wrap:wrap;gap:8px;margin-top:5px;font-size:10px;color:var(--mu);}
+.tlmeta span{color:var(--tx);font-weight:600;}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:700;}
+.bq{background:rgba(213,0,0,.2);color:var(--re);}
+.bv{background:rgba(255,109,0,.2);color:var(--or);}
+.bw{background:rgba(255,214,0,.2);color:var(--ye);}
+.bg{background:rgba(0,200,83,.2);color:var(--gr);}
+.empty{text-align:center;color:var(--mu);font-size:12px;padding:24px;}
+
+/* BTNS FINALIZE */
+.btn-fin{width:100%;border:1px solid var(--gr);background:rgba(0,200,83,.1);color:var(--gr);border-radius:8px;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;}
+
+/* MODAL */
+.mo{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);display:none;align-items:flex-end;}
+.mo.open{display:flex;}
+.md{background:var(--md);border:1px solid var(--bd);border-radius:20px 20px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding:18px 16px 36px;animation:sup .22s ease;}
+@keyframes sup{from{transform:translateY(36px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.mt{font-size:14px;font-weight:800;}
+.mx{background:var(--cd);border:none;border-radius:50%;width:28px;height:28px;color:var(--mu);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.fg{margin-bottom:12px;}
+.fl{font-size:10px;font-weight:700;color:var(--mu);margin-bottom:5px;display:block;letter-spacing:1px;text-transform:uppercase;}
+.fi,.fs,.fta{width:100%;background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:11px 12px;color:var(--tx);font-family:var(--fn);font-size:13px;outline:none;transition:border-color .2s;}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--b2);}
+.fs option{background:var(--cd);}
+.fta{min-height:72px;resize:vertical;}
+/* qty big input */
+.fiqty{width:100%;background:var(--cd);border:2px solid var(--or);border-radius:10px;padding:14px;color:var(--or);font-family:var(--fn);font-size:28px;font-weight:900;text-align:center;outline:none;}
+.fiqty:focus{border-color:var(--re);}
+/* tgrid */
+.tg3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.tg2{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;}
+.tb{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:9px 5px;color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;}
+.tb.active{background:var(--b2);border-color:var(--ac);color:#fff;}
+/* maq tabs — igual mas maior */
+.mtab{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:12px 5px;color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;}
+.mtab.active{background:var(--b2);border-color:var(--ac);color:#fff;}
+/* priority */
+.pg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.pb{padding:8px 3px;border-radius:7px;border:1px solid var(--bd);background:var(--cd);font-size:9.5px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;color:var(--mu);}
+.pb[data-p="Baixa"].active{background:rgba(0,200,83,.15);border-color:var(--gr);color:var(--gr);}
+.pb[data-p="Media"].active{background:rgba(255,214,0,.15);border-color:var(--ye);color:var(--ye);}
+.pb[data-p="Alta"].active{background:rgba(255,109,0,.15);border-color:var(--or);color:var(--or);}
+.pb[data-p="Critica"].active{background:rgba(213,0,0,.15);border-color:var(--re);color:var(--re);}
+.bc{width:100%;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;letter-spacing:.5px;transition:all .15s;}
+.bc:active{transform:scale(.98);}
+.bc-r{background:linear-gradient(135deg,var(--re),#ff1744);color:#fff;}
+.bc-o{background:linear-gradient(135deg,#c04000,var(--or));color:#fff;}
+.bc-y{background:linear-gradient(135deg,#7a6000,#b08800);color:#fff;}
+.bc-b{background:linear-gradient(135deg,var(--b2),var(--ac));color:#fff;}
+
+/* tipos list */
+.tipo-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd);}
+.tipo-item span{font-size:12px;}
+.delbtn{background:transparent;border:none;color:var(--re);font-size:16px;cursor:pointer;padding:2px 6px;}
+
+/* waiting card in hist (standalone) */
+.wcard{background:var(--cd);border:1px solid var(--bd);border-left:3px solid var(--or);border-radius:10px;padding:11px;margin-bottom:8px;}
+
+/* stats */
+.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.sc{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center;}
+.sv{font-size:28px;font-weight:900;line-height:1;margin-bottom:4px;}
+.sl{font-size:10px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+/* chart bars */
+.cbr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.cbl{font-size:10px;color:var(--mu);width:100px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cbt{flex:1;background:var(--bd);border-radius:4px;height:18px;overflow:hidden;}
+.cbf{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:700;color:#fff;min-width:18px;transition:width .6s ease;}
+/* dash dia cells */
+.ddcell{background:rgba(255,255,255,.04);border-radius:8px;padding:10px;text-align:center;}
+.ddv{font-size:20px;font-weight:900;line-height:1;margin-bottom:3px;}
+.ddl{font-size:8px;color:var(--mu);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+/* pendencia item */
+.pend-item{background:rgba(255,109,0,.08);border:1px solid rgba(255,109,0,.25);border-radius:8px;padding:10px;margin-bottom:6px;}
+.pend-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
+.pend-desc{font-size:12px;font-weight:700;}
+.pend-meta{font-size:10px;color:var(--mu);}
+.prio-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;}
+
+/* backup */
+.bksec{margin-bottom:16px;}
+.bkt{font-size:10px;font-weight:700;color:var(--mu);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.sbr{background:var(--bd);border-radius:4px;height:6px;overflow:hidden;margin:5px 0;}
+.sbf{height:100%;background:linear-gradient(90deg,var(--b2),var(--ac));border-radius:4px;}
+.si{display:flex;justify-content:space-between;font-size:10px;color:var(--mu);}
+.bkbtn{background:var(--cd);border:1px solid var(--bd);color:var(--tx);border-radius:8px;padding:11px;width:100%;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:7px;}
+.bkbtn.pu{background:linear-gradient(135deg,#5a0dad,#8b3cc8);border-color:transparent;color:#fff;}
+
+/* toast */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--b2);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:700;z-index:400;opacity:0;transition:opacity .25s;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,64,193,.5);}
+#toast.show{opacity:1;}
+
+/* SOQUETES */
+.soq-card{background:rgba(0,64,193,.12);border:1px solid var(--b2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.soq-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.soq-num{width:28px;height:28px;border-radius:50%;background:var(--b2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;flex-shrink:0;}
+.soq-name-inp{flex:1;background:transparent;border:none;border-bottom:1px solid var(--bd);color:var(--tx);font-size:13px;font-weight:700;padding:2px 0;outline:none;}
+.soq-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.soq-field{background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;}
+.soq-flbl{font-size:9px;color:var(--mu);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.soq-finp{width:100%;background:transparent;border:none;color:var(--tx);font-size:14px;font-weight:800;outline:none;text-align:center;}
+
+/* DATAS */
+.data-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.data-card{border-radius:10px;padding:12px;text-align:center;border:1px solid;}
+.data-card.ok{background:rgba(0,200,83,.1);border-color:rgba(0,200,83,.3);}
+.data-card.warn{background:rgba(255,214,0,.1);border-color:rgba(255,214,0,.3);}
+.data-card.exp{background:rgba(213,0,0,.1);border-color:var(--re);animation:pls 2s infinite;}
+.data-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;color:var(--mu);}
+.data-inp{background:transparent;border:none;color:var(--tx);font-size:13px;font-weight:800;width:100%;text-align:center;outline:none;}
+.data-status{font-size:10px;margin-top:4px;font-weight:700;}
+
+/* ACTION BTNS */
+.act-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.act-btn{border:none;border-radius:10px;padding:14px;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;}
+.act-btn:active{transform:scale(.97);}
+.act-print{background:linear-gradient(135deg,#1a3a6a,var(--b2));color:#fff;}
+.act-wpp{background:linear-gradient(135deg,#075e54,#128c7e);color:#fff;}
+
+/* PRINT */
+@media print{
+  body{background:#fff !important;color:#000 !important;}
+  #hdr,#acts,#hist,#dashboard,#kpis,#abox,#atualizadoTs,.mo:not(#mMaquina){display:none !important;}
+  #pill{margin:0 !important;background:#f0f4ff !important;color:#000 !important;}
+  #mMaquina{position:static !important;background:transparent !important;}
+  #mMaquina .md{border-radius:0 !important;max-height:none !important;box-shadow:none !important;background:#fff !important;color:#000 !important;padding:16px !important;}
+  .mh,.mx{display:none !important;}
+  .act-row{display:none !important;}
+  .soq-card{background:#eef2ff !important;border:1px solid #ccc !important;}
+  .data-card{background:#f5f5f5 !important;border:1px solid #ccc !important;}
+  * {color:#000 !important;}
+  .soq-name-inp,.soq-finp,.data-inp,.fi,.fta{color:#000 !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER 2 LINHAS -->
+<div id="hdr">
+  <div id="hdr-top">
+    <div class="hbadge">🔩</div>
+    <div class="hinfo">
+      <div class="htitle">Quadro Auxiliar LE</div>
+      <div class="hsub">M001 · Apertadeira Elétrica · Fahrwerk · 2ºT</div>
+    </div>
+    <div id="clk"></div>
+  </div>
+  <div id="hdr-bot">
+    <button class="hbtn-maq" id="btnMaquina">🔩 Máquina</button>
+    <button class="hbtn-print" id="btnPrintHdr">🖨️ Imprimir</button>
+    <button class="hbtn-wpp" id="btnWppHdr">📲 WhatsApp</button>
+    <button class="hbtn" id="btnAtualizar" style="background:linear-gradient(135deg,#004d00,#007a00);border-color:#00c853;color:#fff">📥 Importar</button>
+    <input type="file" id="atualizarFile" accept=".json" style="display:none">
+    <button class="hbtn" id="btnStats">📊 Stats</button>
+    <button class="hbtn" id="btnBackup">💾 Backup</button>
+  </div>
+</div>
+<div id="atualizadoTs" style="text-align:center;font-size:10px;color:var(--mu);padding:3px 0 0;display:none"></div>
+
+<!-- STATUS PILL (3 colunas) -->
+<div id="pill" class="op">
+  <div class="pcol">
+    <div class="p-lbl">STATUS</div>
+    <div class="p-val" id="pStatus"><span class="sdot gr" id="pDot"></span>OP</div>
+    <div class="p-sub" id="pSince">—</div>
+  </div>
+  <div class="pcol">
+    <div class="p-lbl">Quebras Hoje</div>
+    <div class="p-val" id="pQbHoje" style="color:var(--re)">0</div>
+    <div class="p-sub">registradas</div>
+  </div>
+  <div class="pcol">
+    <div class="p-lbl">Min Parado</div>
+    <div class="p-val" id="pTempo" style="color:var(--ye)">0</div>
+    <div class="p-sub">hoje</div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div id="kpis">
+  <div class="kp re"><div class="kv" id="kQ">0</div><div class="kl">Quebras Hoje</div></div>
+  <div class="kp or"><div class="kv" id="kV">0</div><div class="kl">Veíc. Perdidos</div></div>
+  <div class="kp ye"><div class="kv" id="kW">0</div><div class="kl">Aguardando</div></div>
+  <div class="kp bl"><div class="kv" id="kT">0</div><div class="kl">Total Hist.</div></div>
+</div>
+
+<!-- ALERTA -->
+<div id="abox">
+  <div class="ai">🚨</div>
+  <div><div class="at" id="atitle">ALERTA CRÍTICO</div><div class="am" id="amsg"></div></div>
+</div>
+
+<!-- DASHBOARD EXPANDIDO -->
+<div id="dashboard" style="padding:12px 14px 0">
+
+  <!-- LINHA DO DIA -->
+  <div style="background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px">
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">📅 RESUMO DO DIA</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" id="dashDia"></div>
+  </div>
+
+  <!-- GRÁFICO TIPOS DE QUEBRA -->
+  <div style="background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px">
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">📊 QUEBRAS POR TIPO</div>
+    <div id="chartTipos"><div style="text-align:center;color:var(--mu);font-size:11px;padding:8px">Sem registros ainda</div></div>
+  </div>
+
+  <!-- GRÁFICO TURNOS -->
+  <div style="background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px">
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">🕐 QUEBRAS POR TURNO</div>
+    <div id="chartTurnos"></div>
+  </div>
+
+  <!-- GRÁFICO POR MÁQUINA -->
+  <div style="background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px">
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">⚙️ QUEBRAS POR TIPO DE MÁQUINA</div>
+    <div id="chartMaq"></div>
+  </div>
+
+  <!-- PENDÊNCIAS -->
+  <div style="background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px">
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">⏳ PENDÊNCIAS ABERTAS</div>
+    <div id="dashPendencias"><div style="text-align:center;color:var(--mu);font-size:11px;padding:8px">Nenhuma pendência</div></div>
+  </div>
+
+  <!-- VEÍCULOS PERDIDOS -->
+  <div style="background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px">
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">🚗 VEÍCULOS PERDIDOS — TIPOS</div>
+    <div id="chartVP"><div style="text-align:center;color:var(--mu);font-size:11px;padding:8px">Sem registros ainda</div></div>
+  </div>
+
+</div>
+
+<!-- AÇÕES -->
+<div id="acts">
+  <button class="bb bb-r" id="btnReg">🔧 REGISTRAR QUEBRA</button>
+  <div class="brow">
+    <button class="bb bb-o" style="font-size:13px" id="btnVP">🚗 VEÍCULO PERDIDO</button>
+    <button class="bb bb-y" style="font-size:13px" id="btnWait">⏳ AGUARDANDO</button>
+  </div>
+  <div class="brow">
+    <button class="bs" id="btnStatus">🔄 Alterar Status</button>
+    <button class="bs" id="btnTipos">⚙️ Tipos de Quebra</button>
+    <button class="bs" id="btnConfig" style="background:rgba(0,200,255,.08);border-color:rgba(0,200,255,.3);color:var(--ac)">🛠️ Configurar</button>
+  </div>
+</div>
+
+<!-- HISTÓRICO -->
+<div id="hist">
+  <div class="stitle">📜 HISTÓRICO</div>
+  <div class="chips">
+    <div class="chip active" data-f="Todos">Todos</div>
+    <div class="chip" data-f="quebra">Quebras</div>
+    <div class="chip" data-f="veiculo">Veículos</div>
+    <div class="chip" data-f="espera">Aguardando</div>
+    <div class="chip" data-f="resolvido">Resolvidos</div>
+  </div>
+  <div class="tl" id="tl"></div>
+</div>
+
+<div id="toast"></div>
+
+<!-- ══ MODAL: REGISTRAR QUEBRA ══ -->
+<div class="mo" id="mReg">
+  <div class="md">
+    <div class="mh"><div class="mt">🔧 Registrar Quebra</div><button class="mx" id="xReg">✕</button></div>
+
+    <div class="fg">
+      <label class="fl">Tipo de Máquina</label>
+      <div class="tg3" id="regMaq">
+        <div class="tb mtab active" data-m="Apertadeira Elétrica" style="padding:13px 4px;line-height:1.3">⚡<br>Apertadeira<br>Elétrica</div>
+        <div class="tb mtab" data-m="Manipulador" style="padding:13px 4px;line-height:1.3">🦾<br>Manipulador</div>
+        <div class="tb mtab" data-m="IHM" style="padding:13px 4px;line-height:1.3">🖥️<br>IHM</div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Tipo de Quebra</label>
+      <select class="fs" id="regTipo"></select>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Turno</label>
+      <div class="tg3" id="regTurno">
+        <div class="tb" data-v="1T">1º Turno</div>
+        <div class="tb active" data-v="2T">2º Turno</div>
+        <div class="tb" data-v="3T">3º Turno</div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Tempo parado (minutos)</label>
+      <input class="fi" id="regTempo" type="number" min="0" placeholder="Ex: 15" inputmode="numeric"/>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Veículo perdido?</label>
+      <div class="tg2">
+        <div class="tb active" id="vpNao">❌ Não</div>
+        <div class="tb" id="vpSim">🚗 Sim</div>
+      </div>
+    </div>
+
+    <div id="regVpGrp" style="display:none">
+      <div class="fg">
+        <label class="fl">Tipo de perda</label>
+        <select class="fs" id="regVpTipo">
+          <option>Sem torque</option><option>Fora de sequência</option>
+          <option>IHM bloqueada</option><option>Retrabalho externo</option><option>Outro</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Quantidade de veículos perdidos sem torque</label>
+        <input class="fiqty" id="regVpQtd" type="number" min="1" value="1" inputmode="numeric"/>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Descrição / Ação tomada</label>
+      <textarea class="fta" id="regDesc" placeholder="Descreva o problema e o que foi feito..."></textarea>
+    </div>
+
+    <button class="bc bc-r" id="confReg">✅ CONFIRMAR QUEBRA</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: VEÍCULO PERDIDO ══ -->
+<div class="mo" id="mVP">
+  <div class="md">
+    <div class="mh"><div class="mt">🚗 Veículo Perdido</div><button class="mx" id="xVP">✕</button></div>
+    <div class="fg">
+      <label class="fl">Tipo de perda</label>
+      <select class="fs" id="vpTipo2">
+        <option>Sem torque</option><option>Fora de sequência</option>
+        <option>IHM bloqueada</option><option>Retrabalho externo</option>
+        <option>Torque NOK não detectado</option><option>Outro</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label class="fl">Quantidade de veículos perdidos sem torque</label>
+      <input class="fiqty" id="vpQtd" type="number" min="1" value="1" inputmode="numeric"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Tempo de linha parada (min)</label>
+      <input class="fi" id="vpTempo" type="number" min="0" placeholder="Ex: 30" inputmode="numeric"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Turno</label>
+      <div class="tg3" id="vpTurno">
+        <div class="tb" data-v="1T">1º Turno</div>
+        <div class="tb active" data-v="2T">2º Turno</div>
+        <div class="tb" data-v="3T">3º Turno</div>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Observações</label>
+      <textarea class="fta" id="vpDesc" placeholder="Descreva o ocorrido..."></textarea>
+    </div>
+    <button class="bc bc-o" id="confVP">✅ REGISTRAR VEÍCULO PERDIDO</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: AGUARDANDO SOLUÇÃO ══ -->
+<div class="mo" id="mWait">
+  <div class="md">
+    <div class="mh"><div class="mt">⏳ Aguardando Solução</div><button class="mx" id="xWait">✕</button></div>
+    <div class="fg">
+      <label class="fl">Data do registro</label>
+      <input class="fi" id="wData" type="date"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Descrição do problema</label>
+      <textarea class="fta" id="wDesc" placeholder="Descreva o problema pendente..."></textarea>
+    </div>
+    <div class="fg">
+      <label class="fl">Responsável pela solução</label>
+      <input class="fi" id="wResp" placeholder="Nome / área responsável"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Prioridade</label>
+      <div class="pg" id="wPrio">
+        <button class="pb" data-p="Baixa">🟢 Baixa</button>
+        <button class="pb active" data-p="Media">🟡 Média</button>
+        <button class="pb" data-p="Alta">🟠 Alta</button>
+        <button class="pb" data-p="Critica">🔴 Crítica</button>
+      </div>
+    </div>
+    <button class="bc bc-y" id="confWait">✅ REGISTRAR PENDÊNCIA</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: TIPOS DE QUEBRA POR MÁQUINA ══ -->
+<div class="mo" id="mTipos">
+  <div class="md">
+    <div class="mh"><div class="mt">⚙️ Tipos por Máquina</div><button class="mx" id="xTipos">✕</button></div>
+    <!-- ABAS MÁQUINA -->
+    <div class="tg3" id="tiposMaqTabs" style="margin-bottom:14px">
+      <button class="mtab active" data-m="Apertadeira Elétrica" style="padding:12px 4px;line-height:1.3">⚡<br>Apert. Elétrica</button>
+      <button class="mtab" data-m="Manipulador" style="padding:12px 4px;line-height:1.3">🦾<br>Manipulador</button>
+      <button class="mtab" data-m="IHM" style="padding:12px 4px;line-height:1.3">🖥️<br>IHM</button>
+    </div>
+    <div id="tiposLista"></div>
+    <div class="fg" style="margin-top:16px">
+      <label class="fl">Adicionar novo tipo</label>
+      <input class="fi" id="novoTipoInp" placeholder="Digite o nome do novo tipo..." style="margin-bottom:8px;font-size:14px;padding:14px;"/>
+      <button class="bc bc-b" style="margin-top:0;font-size:13px;" id="confTipo">+ Adicionar Tipo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: STATUS ══ -->
+<div class="mo" id="mStatus">
+  <div class="md">
+    <div class="mh"><div class="mt">🔄 Alterar Status</div><button class="mx" id="xStatus">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="bc" style="background:rgba(0,200,83,.15);border:1px solid var(--gr);color:var(--gr);margin-top:0" data-s="Operando">🟢 OPERANDO</button>
+      <button class="bc" style="background:rgba(213,0,0,.15);border:1px solid var(--re);color:var(--re);margin-top:0" data-s="Parada">🔴 PARADA</button>
+      <button class="bc" style="background:rgba(255,214,0,.15);border:1px solid var(--ye);color:var(--ye);margin-top:0" data-s="Manutencao">🟡 EM MANUTENÇÃO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ESTATÍSTICAS ══ -->
+<div class="mo" id="mStats">
+  <div class="md">
+    <div class="mh"><div class="mt">📊 Estatísticas</div><button class="mx" id="xStats">✕</button></div>
+    <div id="statsBody"></div>
+  </div>
+</div>
+
+<!-- ══ MODAL: BACKUP ══ -->
+<div class="mo" id="mBackup">
+  <div class="md">
+    <div class="mh"><div class="mt">💾 Backup e Dados</div><button class="mx" id="xBackup">✕</button></div>
+
+    <!-- GUIA DE MIGRAÇÃO -->
+    <div style="background:linear-gradient(135deg,rgba(0,64,193,.2),rgba(0,200,255,.08));border:1px solid var(--b2);border-radius:12px;padding:14px;margin-bottom:14px">
+      <div style="font-size:10px;font-weight:800;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">🔄 COMO USAR NOVA VERSÃO DO APP</div>
+      <div style="font-size:12px;line-height:1.8;color:var(--tx)">
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px">
+          <span style="background:var(--b2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">1</span>
+          <span>Clique <b>"↓ Exportar .json"</b> abaixo para salvar seus dados</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px">
+          <span style="background:var(--b2);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">2</span>
+          <span>Abra o <b>novo arquivo HTML</b> baixado no celular</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px">
+          <span style="background:var(--gr);color:#000;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0">3</span>
+          <span>Clique <b>📥 Importar</b> no header e selecione o .json salvo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bksec">
+      <div class="bkt">🗄️ Armazenamento</div>
+      <div class="sbr"><div class="sbf" id="sbf" style="width:0%"></div></div>
+      <div class="si"><span id="sbUsed">—</span><span>5 MB disponível</span></div>
+    </div>
+    <div class="bksec">
+      <div class="bkt">📤 Exportar dados</div>
+      <button class="bkbtn" id="bkExp" style="font-size:13px;font-weight:800">↓ Exportar .json (salvar dados)</button>
+      <button class="bkbtn pu" id="bkExp2">📦 Salvar no dispositivo</button>
+    </div>
+    <div class="bksec">
+      <div class="bkt">📥 Importar dados</div>
+      <button class="bkbtn" id="bkImp" style="font-size:13px;font-weight:800">📁 Importar .json (carregar dados)</button>
+      <input type="file" id="bkFile" accept=".json" style="display:none">
+    </div>
+    <div class="bksec">
+      <div class="bkt">🗑️ LIMPAR DADOS</div>
+      <button class="bkbtn" style="color:var(--or);border-color:rgba(255,109,0,.3)" id="bkClrHist">🧹 Limpar histórico de quebras e veículos</button>
+      <button class="bkbtn" style="color:var(--ye);border-color:rgba(255,214,0,.3)" id="bkClrPend">🧹 Limpar registros de pendências</button>
+      <button class="bkbtn" style="color:var(--re)" id="bkClr">⚠️ Limpar TODOS os dados</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: DESCRIÇÃO DA MÁQUINA ══ -->
+<div class="mo" id="mMaquina">
+  <div class="md">
+    <div class="mh">
+      <div class="mt">🔩 Descrição da Máquina</div>
+      <button class="mx" id="xMaquina">✕</button>
+    </div>
+
+    <!-- IDENTIFICAÇÃO -->
+    <div style="background:linear-gradient(135deg,var(--b),#001030);border:1px solid var(--b2);border-radius:12px;padding:14px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--b2),var(--ac));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🔩</div>
+        <div>
+          <div style="font-size:15px;font-weight:900;color:#fff">Quadro Auxiliar LE</div>
+          <div style="font-size:10px;color:var(--ac);letter-spacing:1px">M001 · APERTADEIRA ELÉTRICA · FAHRWERK · LINHA 2ºT</div>
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label class="fl">Observações gerais da máquina</label>
+        <textarea class="fta" id="maqObs" placeholder="Ex: Apertadeira elétrica com 3 soquetes rotativas, processo de aperto do quadro auxiliar lado esquerdo..." style="min-height:60px;font-size:12px"></textarea>
+      </div>
+    </div>
+
+    <!-- TORQUE GERAL -->
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">⚡ TORQUES E SOQUETES</div>
+    <div style="font-size:11px;color:var(--mu);margin-bottom:12px">Esta máquina possui 3 soquetes com torques individuais. Preencha os dados de cada um:</div>
+
+    <!-- SOQUETE 1 -->
+    <div class="soq-card">
+      <div class="soq-header">
+        <div class="soq-num">1</div>
+        <input class="soq-name-inp" id="soq1Nome" placeholder="Nome do soquete (Ex: Soquete frontal)"/>
+      </div>
+      <div class="soq-row">
+        <div class="soq-field">
+          <div class="soq-flbl">Medida</div>
+          <input class="soq-finp" id="soq1Med" placeholder="13mm" type="text"/>
+        </div>
+        <div class="soq-field">
+          <div class="soq-flbl">Torque (Nm)</div>
+          <input class="soq-finp" id="soq1Torq" placeholder="25 Nm" type="text"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOQUETE 2 -->
+    <div class="soq-card">
+      <div class="soq-header">
+        <div class="soq-num">2</div>
+        <input class="soq-name-inp" id="soq2Nome" placeholder="Nome do soquete (Ex: Soquete lateral)"/>
+      </div>
+      <div class="soq-row">
+        <div class="soq-field">
+          <div class="soq-flbl">Medida</div>
+          <input class="soq-finp" id="soq2Med" placeholder="17mm" type="text"/>
+        </div>
+        <div class="soq-field">
+          <div class="soq-flbl">Torque (Nm)</div>
+          <input class="soq-finp" id="soq2Torq" placeholder="45 Nm" type="text"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOQUETE 3 -->
+    <div class="soq-card">
+      <div class="soq-header">
+        <div class="soq-num">3</div>
+        <input class="soq-name-inp" id="soq3Nome" placeholder="Nome do soquete (Ex: Soquete traseiro)"/>
+      </div>
+      <div class="soq-row">
+        <div class="soq-field">
+          <div class="soq-flbl">Medida</div>
+          <input class="soq-finp" id="soq3Med" placeholder="19mm" type="text"/>
+        </div>
+        <div class="soq-field">
+          <div class="soq-flbl">Torque (Nm)</div>
+          <input class="soq-finp" id="soq3Torq" placeholder="60 Nm" type="text"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATAS -->
+    <div style="font-size:10px;font-weight:700;color:var(--ac);letter-spacing:2px;text-transform:uppercase;margin:14px 0 10px">📅 DATAS DE CONTROLE</div>
+    <div class="data-row">
+      <div class="data-card ok" id="dataInspCard">
+        <div class="data-lbl">Última Inspeção</div>
+        <input class="data-inp" id="dataInsp" type="date"/>
+        <div class="data-status" id="dataInspStatus" style="color:var(--gr)">—</div>
+      </div>
+      <div class="data-card ok" id="dataVencCard">
+        <div class="data-lbl">Vencimento</div>
+        <input class="data-inp" id="dataVenc" type="date"/>
+        <div class="data-status" id="dataVencStatus" style="color:var(--gr)">—</div>
+      </div>
+    </div>
+
+    <!-- SALVAR -->
+    <button class="bc bc-b" id="confMaquina" style="margin-top:4px">💾 Salvar Descrição</button>
+
+  </div>
+</div>
+
+<!-- ══ MODAL: CONFIGURAÇÕES (MÁQUINA / SETOR / TURNO) ══ -->
+<div class="mo" id="mConfig">
+  <div class="md">
+    <div class="mh"><div class="mt">⚙️ Configurações</div><button class="mx" id="xConfig">✕</button></div>
+    <div style="background:rgba(0,64,193,.1);border:1px solid var(--b2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:11px;color:var(--mu);line-height:1.5">
+      Altere o nome da máquina, setor e turno. As informações aparecem no cabeçalho e nos relatórios.
+    </div>
+    <div class="fg">
+      <label class="fl">Nome da Máquina</label>
+      <input class="fi" id="cfgMaquina" placeholder="Ex: Quadro Auxiliar LE"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Código da Máquina</label>
+      <input class="fi" id="cfgCodigo" placeholder="Ex: M001"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Setor</label>
+      <input class="fi" id="cfgSetor" placeholder="Ex: Fahrwerk"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Linha / Posto</label>
+      <input class="fi" id="cfgLinha" placeholder="Ex: Linha 02 — Posto 5"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Turno</label>
+      <div class="tg3" id="cfgTurno">
+        <div class="tb" data-v="1ºT">1º Turno</div>
+        <div class="tb active" data-v="2ºT">2º Turno</div>
+        <div class="tb" data-v="3ºT">3º Turno</div>
+      </div>
+    </div>
+    <button class="bc bc-b" id="confConfig">💾 Salvar Configurações</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════
+//  STATE
+// ════════════════════════════════
+const SK = 'fahrwerk_qa_le_v2';
+
+const DEF_TIPOS = {
+  'Apertadeira Elétrica': ['Falha de torque','Torque NOK','Sem aperto','Travamento de bit','Falha elétrica','Cabo rompido','Perda de comunicação','Erro de ciclo','Falha pneumática','Outro'],
+  'Manipulador': ['Manipulador travado','Falha pneumática','Erro de ciclo','Sensor','Falha elétrica','Cabo rompido','Perda de comunicação','Outro'],
+  'IHM': ['IHM congelada','Tela sem resposta','Perda de comunicação','Falha de software','Sensor','Erro de ciclo','Outro']
+};
+
+let S = {
+  status: 'Operando', statusSince: Date.now(), tempoParadoAcc: 0,
+  breaks: [], waiting: [], resolved: [], veiculos: [],
+  tiposPorMaquina: JSON.parse(JSON.stringify(DEF_TIPOS)),
+  maqDesc: {
+    obs: '',
+    soquetes: [{nome:'',medida:'',torque:''},{nome:'',medida:'',torque:''},{nome:'',medida:'',torque:''}],
+    dataInsp: '', dataVenc: ''
+  },
+  config: {
+    maquina: 'Quadro Auxiliar LE', codigo: 'M001',
+    setor: 'Fahrwerk', linha: '', turno: '2ºT'
+  }
+};
+
+function load() {
+  try {
+    const raw = localStorage.getItem(SK);
+    if (raw) {
+      const p = JSON.parse(raw);
+      S = { ...S, ...p };
+      if (!S.tiposPorMaquina) S.tiposPorMaquina = JSON.parse(JSON.stringify(DEF_TIPOS));
+      if (!S.resolved) S.resolved = [];
+      if (!S.maqDesc) S.maqDesc = {obs:'',soquetes:[{nome:'',medida:'',torque:''},{nome:'',medida:'',torque:''},{nome:'',medida:'',torque:''}],dataInsp:'',dataVenc:''};
+      if (!S.config) S.config = {maquina:'Quadro Auxiliar LE',codigo:'M001',setor:'Fahrwerk',linha:'',turno:'2ºT'};
+      // garante que todo item de waiting tem ID (migração de versões antigas)
+      S.waiting = (S.waiting||[]).map((w,i) => w.id ? w : {...w, id:'w'+Date.now()+i});
+    } else { save(); }
+  } catch(e) {}
+}
+
+function updateHeader() {
+  const c = S.config;
+  const titleEl = document.querySelector('.htitle');
+  const subEl   = document.querySelector('.hsub');
+  if (titleEl) titleEl.textContent = c.maquina || 'Quadro Auxiliar LE';
+  if (subEl)   subEl.textContent   = [c.codigo, c.setor, c.linha, c.turno].filter(Boolean).join(' · ');
+}
+function save() { try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {} }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+function fmt(ts) { return new Date(ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+function diasEntre(a,b) { return Math.max(0, Math.round((b-a)/86400000)); }
+function toast(msg,col) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.background=col||'var(--b2)';
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);
+}
+function openM(id) { document.getElementById(id).classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+
+// ════════════════════════════════
+//  ALERTAS
+// ════════════════════════════════
+function checkAlerts() {
+  const now=Date.now(), twoH=7200000;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const recentB=S.breaks.filter(b=>(now-b.ts)<twoH).length;
+  const dayB=S.breaks.filter(b=>b.ts>=today.getTime()).length;
+  const box=document.getElementById('abox');
+  const title=document.getElementById('atitle');
+  const msg=document.getElementById('amsg');
+  if (recentB>=3) {
+    title.textContent='🚨 ALERTA CRÍTICO — RECORRÊNCIA';
+    msg.textContent=recentB+' quebras nas últimas 2 horas. Acionar manutenção imediatamente.';
+    box.classList.add('show');
+  } else if (dayB>=5) {
+    title.textContent='⚠️ ALTA FREQUÊNCIA';
+    msg.textContent=dayB+' quebras hoje. Avaliar causa raiz com urgência.';
+    box.classList.add('show');
+  } else if (S.status==='Parada'&&S.tempoParadoAcc>=60) {
+    title.textContent='⏱️ TEMPO PARADO ELEVADO';
+    msg.textContent=S.tempoParadoAcc+' min acumulado. Acompanhar resolução.';
+    box.classList.add('show');
+  } else {
+    box.classList.remove('show');
+  }
+}
+
+// ════════════════════════════════
+//  RENDER PRINCIPAL
+// ════════════════════════════════
+function renderMain() {
+  const today=new Date(); today.setHours(0,0,0,0);
+  const dayB=S.breaks.filter(b=>b.ts>=today.getTime());
+  const tempoHoje=dayB.reduce((a,b)=>a+(b.durMin||0),0);
+  const vpHoje=S.veiculos.filter(v=>v.ts>=today.getTime());
+  const vpQtdTotal=vpHoje.reduce((a,v)=>a+(v.qtd||1),0);
+
+  // Pill status
+  const pill=document.getElementById('pill');
+  const dot=document.getElementById('pDot');
+  const pSt=document.getElementById('pStatus');
+  const pSince=document.getElementById('pSince');
+  pill.className='';
+  const sinceMin=Math.round((Date.now()-(S.statusSince||Date.now()))/60000);
+  if (S.status==='Operando') {
+    pill.classList.add('op'); dot.className='sdot gr';
+    pSt.innerHTML='<span class="sdot gr"></span><span style="color:var(--gr);font-size:14px;font-weight:900">OP</span>';
+  } else if (S.status==='Parada') {
+    pill.classList.add('par'); dot.className='sdot re';
+    pSt.innerHTML='<span class="sdot re"></span><span style="color:var(--re);font-size:14px;font-weight:900">PAR</span>';
+  } else {
+    pill.classList.add('man'); dot.className='sdot ye';
+    pSt.innerHTML='<span class="sdot ye"></span><span style="color:var(--ye);font-size:14px;font-weight:900">MAN</span>';
+  }
+  pSince.textContent = sinceMin>0 ? 'há '+sinceMin+' min' : 'agora';
+  document.getElementById('pQbHoje').textContent = dayB.length;
+  document.getElementById('pTempo').textContent = tempoHoje;
+
+  // KPIs
+  document.getElementById('kQ').textContent = dayB.length;
+  document.getElementById('kV').textContent = vpQtdTotal;
+  document.getElementById('kW').textContent = S.waiting.length;
+  document.getElementById('kT').textContent = S.breaks.length + S.veiculos.length;
+
+  checkAlerts();
+  updateHeader();
+  renderDashboard();
+  renderHist();
+}
+
+// ════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════
+function barChart(containerId, data, colorFn) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const max = data.length ? Math.max(...data.map(d=>d.v), 1) : 1;
+  if (!data.length) { el.innerHTML='<div style="text-align:center;color:var(--mu);font-size:11px;padding:8px">Sem registros ainda</div>'; return; }
+  el.innerHTML = data.map(d=>`
+    <div class="cbr">
+      <div class="cbl" title="${d.l}">${d.l}</div>
+      <div class="cbt"><div class="cbf" style="width:${Math.round(d.v/max*100)}%;background:${colorFn(d,data.indexOf(d))}">${d.v}</div></div>
+    </div>`).join('');
+}
+
+function renderDashboard() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dayB = S.breaks.filter(b=>b.ts>=today.getTime());
+  const totalT = S.breaks.reduce((a,b)=>a+(b.durMin||0),0);
+  const dayT = dayB.reduce((a,b)=>a+(b.durMin||0),0);
+  const vpTotal = S.veiculos.reduce((a,v)=>a+(v.qtd||1),0);
+  const vpHoje = S.veiculos.filter(v=>v.ts>=today.getTime()).reduce((a,v)=>a+(v.qtd||1),0);
+  const avg = S.breaks.length ? Math.round(totalT/S.breaks.length) : 0;
+
+  // Resumo do dia
+  document.getElementById('dashDia').innerHTML = `
+    <div class="ddcell"><div class="ddv" style="color:var(--re)">${dayB.length}</div><div class="ddl">Quebras Hoje</div></div>
+    <div class="ddcell"><div class="ddv" style="color:var(--or)">${vpHoje}</div><div class="ddl">Veíc. Hoje</div></div>
+    <div class="ddcell"><div class="ddv" style="color:var(--ye)">${dayT}</div><div class="ddl">Min Parado</div></div>
+    <div class="ddcell"><div class="ddv" style="color:var(--ac)">${avg}</div><div class="ddl">Méd Reparo</div></div>
+    <div class="ddcell"><div class="ddv" style="color:var(--gr)">${S.resolved.length}</div><div class="ddl">Resolvidos</div></div>
+    <div class="ddcell"><div class="ddv" style="color:var(--mu)">${S.breaks.length}</div><div class="ddl">Total Quebras</div></div>
+  `;
+
+  // Tipos de quebra
+  const tc={};
+  S.breaks.forEach(b=>{tc[b.tipoQuebra]=(tc[b.tipoQuebra]||0)+1;});
+  const tiposData = Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,7).map(([l,v])=>({l,v}));
+  const cols=['#0040c1','#00c8ff','#00c853','#ffd600','#ff6d00','#d50000','#9b59b6'];
+  barChart('chartTipos', tiposData, (_,i)=>cols[i%cols.length]);
+
+  // Turnos
+  const tr={'1T':0,'2T':0,'3T':0};
+  S.breaks.forEach(b=>{if(tr[b.turno]!==undefined)tr[b.turno]++;});
+  const trL={'1T':'1º Turno','2T':'2º Turno','3T':'3º Turno'};
+  const trC={'1T':'#0040c1','2T':'#00c8ff','3T':'#ffd600'};
+  barChart('chartTurnos',
+    Object.entries(tr).map(([k,v])=>({l:trL[k],v,k})),
+    (d)=>trC[d.k]||'#0040c1'
+  );
+
+  // Por tipo de máquina
+  const mc={};
+  S.breaks.forEach(b=>{mc[b.tipoMaquina||'—']=(mc[b.tipoMaquina||'—']||0)+1;});
+  const maqC={'Apertadeira Elétrica':'#0040c1','Manipulador':'#00c8ff','IHM':'#ffd600'};
+  barChart('chartMaq',
+    Object.entries(mc).sort((a,b)=>b[1]-a[1]).map(([l,v])=>({l,v})),
+    (d)=>maqC[d.l]||'#5a6a90'
+  );
+
+  // VP por tipo
+  const vpc={};
+  S.veiculos.forEach(v=>{vpc[v.tipoPerda]=(vpc[v.tipoPerda]||0)+(v.qtd||1);});
+  barChart('chartVP',
+    Object.entries(vpc).sort((a,b)=>b[1]-a[1]).map(([l,v])=>({l,v})),
+    (_,i)=>['#ff6d00','#d50000','#ffd600','#00c8ff'][i%4]
+  );
+
+  // Pendências
+  const pendEl = document.getElementById('dashPendencias');
+  if (!S.waiting || !S.waiting.length) {
+    pendEl.innerHTML='<div style="text-align:center;color:var(--mu);font-size:11px;padding:8px">✅ Nenhuma pendência aberta</div>';
+  } else {
+    const prioCols={'Baixa':'rgba(0,200,83,.25)','Media':'rgba(255,214,0,.25)','Alta':'rgba(255,109,0,.3)','Critica':'rgba(213,0,0,.3)'};
+    const prioTx={'Baixa':'var(--gr)','Media':'var(--ye)','Alta':'var(--or)','Critica':'var(--re)'};
+    pendEl.innerHTML = S.waiting.map(w=>{
+      const desc = w.desc || '(sem descrição)';
+      const dias = diasEntre(w.ts, Date.now());
+      const diasTxt = dias===0?'Aberto hoje':dias+(dias===1?' dia':' dias')+' em aberto';
+      const dataFmt = w.dataRegistro
+        ? new Date(w.dataRegistro+'T12:00:00').toLocaleDateString('pt-BR')
+        : new Date(w.ts).toLocaleDateString('pt-BR');
+      const col = prioCols[w.priority] || prioCols.Media;
+      const tx  = prioTx[w.priority] || prioTx.Media;
+      const wid = w.id || '';
+      return `<div class="pend-item" style="border-left-color:${tx}">
+        <div class="pend-top">
+          <div class="pend-desc" style="font-weight:700;font-size:12px;flex:1;padding-right:6px">${desc.length>50?desc.substr(0,48)+'…':desc}</div>
+          <span class="prio-badge" style="background:${col};color:${tx};flex-shrink:0">${w.priority}</span>
+        </div>
+        <div class="pend-meta" style="margin-top:5px">
+          📅 ${dataFmt} &nbsp;·&nbsp; ${diasTxt}<br>
+          👤 ${w.resp||'—'}
+        </div>
+        <button class="btn-fin" data-wid="${wid}">
+          ✅ Concluído — solução finalizada (${dias===0?'hoje':dias+(dias===1?' dia':' dias')})
+        </button>
+      </div>`;
+    }).join('');
+
+    // delegação de evento: não depende de id único no DOM
+    pendEl.onclick = function(e) {
+      const btn = e.target.closest('[data-wid]');
+      if (!btn) return;
+      const wid = btn.dataset.wid;
+      const w = S.waiting.find(x => String(x.id||'') === String(wid));
+      if (!w) return;
+      if (!confirm('Marcar como concluído?\n"' + (w.desc||'').substr(0,60) + '"')) return;
+      const dias = diasEntre(w.ts, Date.now());
+      S.resolved.push({...w, resolvedTs:Date.now(), dias});
+      S.waiting = S.waiting.filter(x => String(x.id||'') !== String(wid));
+      save(); renderMain();
+      toast('✅ Concluído! '+dias+(dias===1?' dia':' dias')+' em aberto.','var(--gr)');
+    };
+  }
+}
+
+// ════════════════════════════════
+//  HISTÓRICO
+// ════════════════════════════════
+let hFil = 'Todos';
+function renderHist() {
+  let items = [];
+
+  S.breaks.forEach(b => {
+    const vpBadge = b.veiculoPerdido
+      ? ' <span class="badge bv">🚗 VP'+(b.vpQtd>1?' ×'+b.vpQtd:'')+'</span>'
+      : '';
+    items.push({
+      type:'quebra', ts:b.ts, dotC:'var(--re)',
+      title: b.tipoQuebra + vpBadge,
+      desc: b.desc||'—',
+      meta: [
+        {l:'Máquina', v:b.tipoMaquina||'—'},
+        {l:'Turno', v:b.turno||'—'},
+        {l:'Tempo', v:(b.durMin||0)+'min'}
+      ]
+    });
+  });
+
+  S.veiculos.forEach(v => {
+    items.push({
+      type:'veiculo', ts:v.ts, dotC:'var(--or)',
+      title: '🚗 Veículo Perdido <span class="badge bv">×'+(v.qtd||1)+'</span>',
+      desc: v.tipoPerda + (v.desc?' · '+v.desc:''),
+      meta: [
+        {l:'Turno', v:v.turno||'—'},
+        {l:'Qtd', v:(v.qtd||1)+' veículo(s)'},
+        {l:'Linha parada', v:(v.durMin||0)+'min'}
+      ]
+    });
+  });
+
+  S.waiting.forEach(w => {
+    const dias = diasEntre(w.ts, Date.now());
+    const diasTxt = dias===0?'hoje':dias+(dias===1?' dia':' dias');
+    items.push({
+      type:'espera', ts:w.ts, dotC:'var(--ye)',
+      title: '⏳ Aguardando Solução <span class="badge bw">'+w.priority+'</span>',
+      desc: w.desc,
+      meta: [{l:'Resp.', v:w.resp||'—'}, {l:'Aberto há', v:diasTxt}],
+      wid: w.id, dias
+    });
+  });
+
+  S.resolved.forEach(r => {
+    const diasTxt = r.dias===0?'mesmo dia':r.dias+(r.dias===1?' dia':' dias');
+    items.push({
+      type:'resolvido', ts:r.resolvedTs, dotC:'var(--gr)',
+      title: '✅ Solução Finalizada <span class="badge bg">'+diasTxt+'</span>',
+      desc: r.desc,
+      meta: [
+        {l:'Resp.', v:r.resp||'—'},
+        {l:'Aberto em', v:fmt(r.ts)},
+        {l:'Finalizado', v:fmt(r.resolvedTs)}
+      ],
+      cardStyle:'border-left:3px solid var(--gr)'
+    });
+  });
+
+  if (hFil==='espera') items=items.filter(i=>i.type==='espera'||i.type==='resolvido');
+  else if (hFil!=='Todos') items=items.filter(i=>i.type===hFil);
+  items.sort((a,b)=>b.ts-a.ts);
+
+  const tl=document.getElementById('tl');
+  if (!items.length) { tl.innerHTML='<div class="empty">Nenhum registro encontrado.</div>'; return; }
+
+  tl.innerHTML = items.map(item=>`
+    <div class="tli">
+      <div class="tldot" style="background:${item.dotC};border-color:${item.dotC}"></div>
+      <div class="tltime">${fmt(item.ts)}</div>
+      <div class="tlc" style="${item.cardStyle||''}">
+        <div class="tltitle">${item.title}</div>
+        <div class="tldesc">${item.desc}</div>
+        <div class="tlmeta">${item.meta.map(m=>'<div>'+m.l+': <span>'+m.v+'</span></div>').join('')}</div>
+        ${item.wid ? `<button class="btn-fin" id="fin_${item.wid}">✅ Solução Finalizada — registrar conclusão (${item.dias===0?'hoje':item.dias+(item.dias===1?' dia':' dias')} em aberto)</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  S.waiting.forEach(w => {
+    const btn = document.getElementById('fin_'+w.id);
+    if (btn) btn.addEventListener('click', () => {
+      const dias = diasEntre(w.ts, Date.now());
+      S.resolved.push({ ...w, resolvedTs: Date.now(), dias });
+      S.waiting = S.waiting.filter(x=>x.id!==w.id);
+      save(); renderMain();
+      toast('✅ Finalizado! '+dias+(dias===1?' dia':' dias')+' em aberto.', 'var(--gr)');
+    });
+  });
+}
+
+// ════════════════════════════════
+//  TIPOS POR MÁQUINA
+// ════════════════════════════════
+let tiposMaqAtual = 'Apertadeira Elétrica';
+
+function renderTipos() {
+  const lista = S.tiposPorMaquina[tiposMaqAtual] || [];
+  document.getElementById('tiposLista').innerHTML = lista.length
+    ? lista.map((t,i)=>`
+        <div class="tipo-item">
+          <span>🔹 ${t}</span>
+          <button class="delbtn" id="dt_${i}">✕</button>
+        </div>`).join('')
+    : '<div class="empty" style="padding:10px 0">Nenhum tipo. Adicione abaixo.</div>';
+  lista.forEach((_,i)=>{
+    const b=document.getElementById('dt_'+i);
+    if(b) b.addEventListener('click',()=>{
+      S.tiposPorMaquina[tiposMaqAtual].splice(i,1);
+      save(); renderTipos(); syncBreakSelect();
+    });
+  });
+}
+
+function syncBreakSelect() {
+  const maq = document.querySelector('#regMaq .tb.active')?.dataset.m || 'Apertadeira Elétrica';
+  const lista = S.tiposPorMaquina[maq] || [];
+  document.getElementById('regTipo').innerHTML = lista.map(t=>`<option>${t}</option>`).join('');
+}
+
+// ════════════════════════════════
+//  STATS
+// ════════════════════════════════
+function renderStats() {
+  const today=new Date(); today.setHours(0,0,0,0);
+  const dayB=S.breaks.filter(b=>b.ts>=today.getTime());
+  const totalT=S.breaks.reduce((a,b)=>a+(b.durMin||0),0);
+  const avg=S.breaks.length?Math.round(totalT/S.breaks.length):0;
+  const vpTotal=S.veiculos.reduce((a,v)=>a+(v.qtd||1),0);
+  const tc={};
+  S.breaks.forEach(b=>{tc[b.tipoQuebra]=(tc[b.tipoQuebra]||0)+1;});
+  const st=Object.entries(tc).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const maxT=st.length?st[0][1]:1;
+  const cols=['#0040c1','#00c8ff','#00c853','#ffd600','#ff6d00','#d50000'];
+  const tc2={'1T':0,'2T':0,'3T':0};
+  S.breaks.forEach(b=>{if(tc2[b.turno]!==undefined)tc2[b.turno]++;});
+  const maxTur=Math.max(...Object.values(tc2),1);
+  const tL={'1T':'1º Turno','2T':'2º Turno','3T':'3º Turno'};
+  const tC={'1T':'#0040c1','2T':'#00c8ff','3T':'#ffd600'};
+  document.getElementById('statsBody').innerHTML=`
+    <div class="sgrid">
+      <div class="sc"><div class="sv" style="color:var(--re)">${S.breaks.length}</div><div class="sl">Total Quebras</div></div>
+      <div class="sc"><div class="sv" style="color:var(--or)">${vpTotal}</div><div class="sl">Veíc. Perdidos</div></div>
+      <div class="sc"><div class="sv" style="color:var(--ye)">${totalT}</div><div class="sl">Min Parado Total</div></div>
+      <div class="sc"><div class="sv" style="color:var(--ac)">${avg}</div><div class="sl">Méd. Reparo (min)</div></div>
+      <div class="sc"><div class="sv" style="color:var(--re)">${dayB.length}</div><div class="sl">Quebras Hoje</div></div>
+      <div class="sc"><div class="sv" style="color:var(--gr)">${S.resolved.length}</div><div class="sl">Soluções Finalizadas</div></div>
+    </div>
+    <div class="stitle" style="margin-top:14px">TOP TIPOS DE QUEBRA</div>
+    <div style="margin-bottom:14px">${st.length?st.map(([t,c],i)=>`
+      <div class="cbr"><div class="cbl">${t}</div>
+      <div class="cbt"><div class="cbf" style="width:${Math.round(c/maxT*100)}%;background:${cols[i%6]}">${c}</div></div></div>`).join(''):'<div class="empty" style="padding:8px">Sem dados.</div>'}</div>
+    <div class="stitle">QUEBRAS POR TURNO</div>
+    ${Object.entries(tc2).map(([t,c])=>`
+      <div class="cbr"><div class="cbl">${tL[t]}</div>
+      <div class="cbt"><div class="cbf" style="width:${Math.round(c/maxTur*100)}%;background:${tC[t]}">${c}</div></div></div>`).join('')}
+  `;
+}
+
+// ════════════════════════════════
+//  EVENTOS
+// ════════════════════════════════
+function initEvents() {
+
+  // Chips histórico
+  document.querySelectorAll('.chips .chip').forEach(c=>{
+    c.addEventListener('click',function(){
+      document.querySelectorAll('.chips .chip').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active'); hFil=this.dataset.f; renderHist();
+    });
+  });
+
+  // ── ATUALIZAR (carregar JSON do dispositivo) ──
+  document.getElementById('btnAtualizar').addEventListener('click',()=>{
+    document.getElementById('atualizarFile').click();
+  });
+  document.getElementById('atualizarFile').addEventListener('change', e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=ev=>{
+      try {
+        const p=JSON.parse(ev.target.result);
+        S={...S,...p};
+        if(!S.tiposPorMaquina) S.tiposPorMaquina=JSON.parse(JSON.stringify(DEF_TIPOS));
+        if(!S.resolved) S.resolved=[];
+        save(); renderMain();
+        const agora=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+        const tsEl=document.getElementById('atualizadoTs');
+        tsEl.textContent='✅ Dados importados às '+agora;
+        tsEl.style.display='block';
+        setTimeout(()=>tsEl.style.display='none',6000);
+        toast('✅ Dados importados com sucesso!','var(--gr)');
+      } catch { toast('❌ Arquivo inválido'); }
+    };
+    r.readAsText(f); e.target.value='';
+  });
+
+  // ── REGISTRAR QUEBRA ──
+  document.getElementById('btnReg').addEventListener('click',()=>{
+    document.querySelectorAll('#regMaq .tb').forEach((b,i)=>b.classList.toggle('active',i===0));
+    syncBreakSelect();
+    document.getElementById('regTempo').value='';
+    document.getElementById('regDesc').value='';
+    document.getElementById('regVpQtd').value='1';
+    document.getElementById('vpNao').classList.add('active');
+    document.getElementById('vpSim').classList.remove('active');
+    document.getElementById('regVpGrp').style.display='none';
+    openM('mReg');
+  });
+  document.getElementById('xReg').addEventListener('click',()=>closeM('mReg'));
+
+  document.querySelectorAll('#regMaq .tb').forEach(b=>{
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#regMaq .tb').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active'); syncBreakSelect();
+    });
+  });
+  document.querySelectorAll('#regTurno .tb').forEach(b=>{
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#regTurno .tb').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  document.getElementById('vpNao').addEventListener('click',()=>{
+    document.getElementById('vpNao').classList.add('active');
+    document.getElementById('vpSim').classList.remove('active');
+    document.getElementById('regVpGrp').style.display='none';
+  });
+  document.getElementById('vpSim').addEventListener('click',()=>{
+    document.getElementById('vpSim').classList.add('active');
+    document.getElementById('vpNao').classList.remove('active');
+    document.getElementById('regVpGrp').style.display='block';
+  });
+
+  document.getElementById('confReg').addEventListener('click',()=>{
+    const maq = document.querySelector('#regMaq .tb.active')?.dataset.m||'Apertadeira Elétrica';
+    const tipo = document.getElementById('regTipo').value;
+    const turno = document.querySelector('#regTurno .tb.active')?.dataset.v||'2T';
+    const dur = parseInt(document.getElementById('regTempo').value)||0;
+    const desc = document.getElementById('regDesc').value.trim();
+    const vp = document.getElementById('vpSim').classList.contains('active');
+    const vpTipo = document.getElementById('regVpTipo').value;
+    const vpQtd = vp ? (parseInt(document.getElementById('regVpQtd').value)||1) : 0;
+
+    S.breaks.push({id:uid(),tipoMaquina:maq,tipoQuebra:tipo,turno,durMin:dur,desc,veiculoPerdido:vp,vpTipo:vp?vpTipo:null,vpQtd,ts:Date.now()});
+    S.tempoParadoAcc = (S.tempoParadoAcc||0) + dur;
+    if (S.status==='Operando') { S.status='Parada'; S.statusSince=Date.now(); }
+    if (vp) S.veiculos.push({id:uid(),tipoPerda:vpTipo,qtd:vpQtd,turno,durMin:dur,desc:'Via registro de quebra',ts:Date.now()});
+
+    save(); closeM('mReg'); renderMain();
+    toast('🔧 Quebra registrada!'+(vp?' — '+vpQtd+' veíc.':''), vp?'var(--or)':'var(--re)');
+  });
+
+  // ── VEÍCULO PERDIDO ──
+  document.getElementById('btnVP').addEventListener('click',()=>{
+    document.getElementById('vpQtd').value='1';
+    document.getElementById('vpTempo').value='';
+    document.getElementById('vpDesc').value='';
+    document.querySelectorAll('#vpTurno .tb').forEach((b,i)=>b.classList.toggle('active',i===1));
+    openM('mVP');
+  });
+  document.getElementById('xVP').addEventListener('click',()=>closeM('mVP'));
+  document.querySelectorAll('#vpTurno .tb').forEach(b=>{
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#vpTurno .tb').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  document.getElementById('confVP').addEventListener('click',()=>{
+    const tipoPerda = document.getElementById('vpTipo2').value;
+    const qtd = parseInt(document.getElementById('vpQtd').value)||1;
+    const dur = parseInt(document.getElementById('vpTempo').value)||0;
+    const turno = document.querySelector('#vpTurno .tb.active')?.dataset.v||'2T';
+    const desc = document.getElementById('vpDesc').value.trim();
+    S.veiculos.push({id:uid(),tipoPerda,qtd,turno,durMin:dur,desc,ts:Date.now()});
+    save(); closeM('mVP'); renderMain();
+    toast('🚗 '+qtd+' veículo(s) registrado(s)!','var(--or)');
+  });
+
+  // ── AGUARDANDO SOLUÇÃO ──
+  document.getElementById('btnWait').addEventListener('click',()=>{
+    document.getElementById('wDesc').value='';
+    document.getElementById('wResp').value='';
+    document.getElementById('wData').value=new Date().toISOString().slice(0,10);
+    document.querySelectorAll('#wPrio .pb').forEach((b,i)=>b.classList.toggle('active',i===1));
+    openM('mWait');
+  });
+  document.getElementById('xWait').addEventListener('click',()=>closeM('mWait'));
+  document.querySelectorAll('#wPrio .pb').forEach(b=>{
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#wPrio .pb').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  document.getElementById('confWait').addEventListener('click',()=>{
+    const desc = document.getElementById('wDesc').value.trim();
+    const resp = document.getElementById('wResp').value.trim();
+    const dataRegistro = document.getElementById('wData').value;
+    const prio = document.querySelector('#wPrio .pb.active')?.dataset.p||'Media';
+    if (!desc) { toast('⚠️ Preencha a descrição'); return; }
+    S.waiting.push({id:uid(), desc, resp, priority:prio, dataRegistro, ts:Date.now()});
+    save(); closeM('mWait'); renderMain();
+    toast('⏳ Pendência registrada!','var(--ye)');
+  });
+
+  // ── STATUS ──
+  document.getElementById('btnStatus').addEventListener('click',()=>openM('mStatus'));
+  document.getElementById('xStatus').addEventListener('click',()=>closeM('mStatus'));
+  document.querySelectorAll('#mStatus .bc[data-s]').forEach(b=>{
+    b.addEventListener('click',function(){
+      S.status=this.dataset.s; S.statusSince=Date.now();
+      save(); closeM('mStatus'); renderMain();
+      toast('✅ Status: '+S.status);
+    });
+  });
+
+  // ── TIPOS POR MÁQUINA ──
+  document.getElementById('btnTipos').addEventListener('click',()=>{
+    tiposMaqAtual='Apertadeira Elétrica';
+    document.querySelectorAll('#tiposMaqTabs .mtab').forEach((b,i)=>b.classList.toggle('active',i===0));
+    renderTipos(); openM('mTipos');
+  });
+  document.getElementById('xTipos').addEventListener('click',()=>closeM('mTipos'));
+  document.querySelectorAll('#tiposMaqTabs .mtab').forEach(b=>{
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#tiposMaqTabs .mtab').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active');
+      tiposMaqAtual=this.dataset.m; renderTipos();
+    });
+  });
+  document.getElementById('confTipo').addEventListener('click',()=>{
+    const v=document.getElementById('novoTipoInp').value.trim();
+    if (!v) { toast('⚠️ Digite o nome'); return; }
+    if (!S.tiposPorMaquina[tiposMaqAtual]) S.tiposPorMaquina[tiposMaqAtual]=[];
+    if (S.tiposPorMaquina[tiposMaqAtual].includes(v)) { toast('⚠️ Já existe'); return; }
+    S.tiposPorMaquina[tiposMaqAtual].push(v);
+    save(); renderTipos(); syncBreakSelect();
+    document.getElementById('novoTipoInp').value='';
+    toast('✅ Adicionado em '+tiposMaqAtual+'!');
+  });
+
+  // ── STATS ──
+  document.getElementById('btnStats').addEventListener('click',()=>{ renderStats(); openM('mStats'); });
+  document.getElementById('xStats').addEventListener('click',()=>closeM('mStats'));
+
+  // ── BACKUP ──
+  document.getElementById('btnBackup').addEventListener('click',()=>{
+    try {
+      const u=new Blob([JSON.stringify(S)]).size;
+      const pct=Math.min(u/(5*1024*1024)*100,100).toFixed(1);
+      document.getElementById('sbf').style.width=pct+'%';
+      document.getElementById('sbUsed').textContent=u>1024?(u/1024).toFixed(1)+' KB':u+' B';
+    } catch(e) {}
+    openM('mBackup');
+  });
+  document.getElementById('xBackup').addEventListener('click',()=>closeM('mBackup'));
+  function doExp() {
+    const bl=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(bl);
+    a.download='qa-le-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+    closeM('mBackup'); toast('💾 Backup exportado!');
+  }
+  document.getElementById('bkExp').addEventListener('click',doExp);
+  document.getElementById('bkExp2').addEventListener('click',doExp);
+  document.getElementById('bkImp').addEventListener('click',()=>document.getElementById('bkFile').click());
+  document.getElementById('bkFile').addEventListener('change',e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=ev=>{
+      try {
+        S={...S,...JSON.parse(ev.target.result)};
+        if(!S.tiposPorMaquina) S.tiposPorMaquina=JSON.parse(JSON.stringify(DEF_TIPOS));
+        if(!S.resolved) S.resolved=[];
+        save(); renderMain(); closeM('mBackup'); toast('✅ Dados restaurados!');
+      } catch { toast('❌ Arquivo inválido'); }
+    };
+    r.readAsText(f); e.target.value='';
+  });
+  document.getElementById('bkClrHist').addEventListener('click',()=>{
+    if(confirm('Apagar todo o histórico de quebras e veículos perdidos?\nEsta ação não pode ser desfeita.')) {
+      S.breaks=[]; S.veiculos=[]; S.tempoParadoAcc=0;
+      save(); renderMain(); closeM('mBackup');
+      toast('🧹 Histórico limpo!','var(--or)');
+    }
+  });
+  document.getElementById('bkClrPend').addEventListener('click',()=>{
+    if(confirm('Apagar todos os registros de pendências (abertas e resolvidas)?\nEsta ação não pode ser desfeita.')) {
+      S.waiting=[]; S.resolved=[];
+      save(); renderMain(); closeM('mBackup');
+      toast('🧹 Pendências limpas!','var(--ye)');
+    }
+  });
+  document.getElementById('bkClr').addEventListener('click',()=>{
+    if(confirm('Apagar TODOS os dados? Esta ação não pode ser desfeita.')) {
+      localStorage.removeItem(SK); location.reload();
+    }
+  });
+
+  // Fechar por backdrop
+  document.querySelectorAll('.mo').forEach(ov=>{
+    ov.addEventListener('click',e=>{ if(e.target===ov) ov.classList.remove('open'); });
+  });
+
+  // ── CONFIGURAÇÕES ──
+  document.getElementById('btnConfig').addEventListener('click',()=>{
+    const c=S.config;
+    document.getElementById('cfgMaquina').value=c.maquina||'';
+    document.getElementById('cfgCodigo').value=c.codigo||'';
+    document.getElementById('cfgSetor').value=c.setor||'';
+    document.getElementById('cfgLinha').value=c.linha||'';
+    document.querySelectorAll('#cfgTurno .tb').forEach(b=>{
+      b.classList.toggle('active', b.dataset.v===c.turno);
+    });
+    openM('mConfig');
+  });
+  document.getElementById('xConfig').addEventListener('click',()=>closeM('mConfig'));
+  document.querySelectorAll('#cfgTurno .tb').forEach(b=>{
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#cfgTurno .tb').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  document.getElementById('confConfig').addEventListener('click',()=>{
+    S.config = {
+      maquina: document.getElementById('cfgMaquina').value.trim() || 'Quadro Auxiliar LE',
+      codigo:  document.getElementById('cfgCodigo').value.trim() || 'M001',
+      setor:   document.getElementById('cfgSetor').value.trim() || 'Fahrwerk',
+      linha:   document.getElementById('cfgLinha').value.trim(),
+      turno:   document.querySelector('#cfgTurno .tb.active')?.dataset.v || '2ºT'
+    };
+    save(); updateHeader(); closeM('mConfig');
+    toast('✅ Configurações salvas!','var(--gr)');
+  });
+
+  // ── DESCRIÇÃO DA MÁQUINA ──
+  document.getElementById('btnMaquina').addEventListener('click',()=>{
+    const d = S.maqDesc;
+    document.getElementById('maqObs').value = d.obs||'';
+    [1,2,3].forEach(i=>{
+      const s = d.soquetes[i-1]||{};
+      document.getElementById('soq'+i+'Nome').value = s.nome||'';
+      document.getElementById('soq'+i+'Med').value  = s.medida||'';
+      document.getElementById('soq'+i+'Torq').value = s.torque||'';
+    });
+    document.getElementById('dataInsp').value = d.dataInsp||'';
+    document.getElementById('dataVenc').value = d.dataVenc||'';
+    atualizaDataCards();
+    openM('mMaquina');
+  });
+  document.getElementById('xMaquina').addEventListener('click',()=>closeM('mMaquina'));
+
+  // atualiza visual dos cards de data ao mudar
+  ['dataInsp','dataVenc'].forEach(id=>{
+    document.getElementById(id).addEventListener('change', atualizaDataCards);
+  });
+
+  function atualizaDataCards() {
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const insp = document.getElementById('dataInsp').value;
+    const venc = document.getElementById('dataVenc').value;
+    const iCard = document.getElementById('dataInspCard');
+    const vCard = document.getElementById('dataVencCard');
+    const iSt   = document.getElementById('dataInspStatus');
+    const vSt   = document.getElementById('dataVencStatus');
+
+    if (insp) {
+      const d = new Date(insp); const dias = Math.round((hoje-d)/86400000);
+      iSt.textContent = dias===0?'Hoje':dias+' dias atrás';
+      iCard.className = 'data-card ' + (dias>365?'warn':'ok');
+      iSt.style.color = dias>365?'var(--ye)':'var(--gr)';
+    } else { iSt.textContent='—'; iCard.className='data-card ok'; }
+
+    if (venc) {
+      const d = new Date(venc); const dias = Math.round((d-hoje)/86400000);
+      if (dias < 0) {
+        vSt.textContent='VENCIDO há '+Math.abs(dias)+' dias'; vCard.className='data-card exp'; vSt.style.color='var(--re)';
+      } else if (dias <= 30) {
+        vSt.textContent='Vence em '+dias+' dias'; vCard.className='data-card warn'; vSt.style.color='var(--ye)';
+      } else {
+        vSt.textContent='Válido — '+dias+' dias'; vCard.className='data-card ok'; vSt.style.color='var(--gr)';
+      }
+    } else { vSt.textContent='—'; vCard.className='data-card ok'; }
+  }
+
+  document.getElementById('confMaquina').addEventListener('click',()=>{
+    S.maqDesc = {
+      obs: document.getElementById('maqObs').value,
+      soquetes: [1,2,3].map(i=>({
+        nome:  document.getElementById('soq'+i+'Nome').value,
+        medida:document.getElementById('soq'+i+'Med').value,
+        torque:document.getElementById('soq'+i+'Torq').value
+      })),
+      dataInsp: document.getElementById('dataInsp').value,
+      dataVenc: document.getElementById('dataVenc').value
+    };
+    save(); toast('💾 Descrição salva!','var(--gr)');
+  });
+
+  function buildWppMsg() {
+    const d = S.maqDesc;
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const venc = d.dataVenc ? new Date(d.dataVenc) : null;
+    const diasVenc = venc ? Math.round((venc-hoje)/86400000) : null;
+    const statusVenc = diasVenc===null ? '—' : diasVenc<0 ? '🔴 VENCIDO' : diasVenc<=30 ? '🟡 Vence em '+diasVenc+' dias' : '🟢 Válido';
+    const today = new Date(); today.setHours(0,0,0,0);
+    const qbHoje = S.breaks.filter(b=>b.ts>=today.getTime()).length;
+    const vpHoje = S.veiculos.filter(v=>v.ts>=today.getTime()).reduce((a,v)=>a+(v.qtd||1),0);
+    return `🔩 *QUADRO AUXILIAR LE — M001*\n`+
+      `Apertadeira Elétrica · Fahrwerk · 2ºT\n\n`+
+      `⚙️ *SOQUETES E TORQUES*\n`+
+      d.soquetes.map((s,i)=>`${i+1}. ${s.nome||'Soquete '+(i+1)} — ${s.medida||'—'} — ${s.torque||'—'} Nm`).join('\n')+
+      `\n\n📅 *DATAS*\n`+
+      `Última inspeção: ${d.dataInsp?new Date(d.dataInsp).toLocaleDateString('pt-BR'):'—'}\n`+
+      `Vencimento: ${d.dataVenc?new Date(d.dataVenc).toLocaleDateString('pt-BR'):'—'} ${statusVenc}\n\n`+
+      `📊 *STATUS DO DIA*\n`+
+      `Quebras hoje: ${qbHoje}\nVeículos perdidos: ${vpHoje}\nStatus: ${S.status}\n\n`+
+      `${d.obs?'📝 '+d.obs+'\n\n':''}`+
+      `_${new Date().toLocaleString('pt-BR')}_`;
+  }
+
+  // Imprimir e WhatsApp no HEADER
+  document.getElementById('btnPrintHdr').addEventListener('click',()=>{
+    document.getElementById('confMaquina').click();
+    setTimeout(()=>window.print(),300);
+  });
+  document.getElementById('btnWppHdr').addEventListener('click',()=>{
+    window.open('https://wa.me/?text='+encodeURIComponent(buildWppMsg()),'_blank');
+  });
+}
+
+// ════════════════════════════════
+//  RELÓGIO
+// ════════════════════════════════
+function tick() {
+  const n=new Date();
+  document.getElementById('clk').innerHTML =
+    n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+
+    '<br>'+n.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' 2ºT';
+}
+
+// ════════════════════════════════
+//  NFC
+// ════════════════════════════════
+async function initNFC() {
+  if ('NDEFReader' in window) {
+    try {
+      const nd=new NDEFReader(); await nd.scan();
+      nd.onreading=()=>toast('📡 TAG NFC lida — Quadro Auxiliar LE');
+    } catch(e) {}
+  }
+}
+
+// ════════════════════════════════
+//  INIT
+// ════════════════════════════════
+function init() {
+  load(); updateHeader(); renderMain(); initEvents(); initNFC();
+  tick(); setInterval(tick,1000);
+  setInterval(()=>checkAlerts(),60000);
+}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
